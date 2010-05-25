@@ -1,0 +1,9 @@
+AuthUserFile /home/pangel/.htpasswd
+AuthGroupFile /dev/null
+AuthName "Planet Angel Administrator"
+AuthType Basic
+
+<Limit GET POST>
+require valid-user
+</Limit>
+

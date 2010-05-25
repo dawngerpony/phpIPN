@@ -1,0 +1,5 @@
+Name:  %first_name% %last_name%
+Payment status: %payment_status%
+Number of tickets purchased: %quantity%
+Item name: %item_name%
+PA ticket ID: %pa_ticket_id%
