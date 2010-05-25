@@ -2,7 +2,7 @@ Well, here it is. This is your special Crew ticket confirmation for the Planet A
 
 Thanks for your contribution to Planet Angel over the last year, we're pleased to be able to offer a special price to active Crew :)  We've kept the rest of the ticket confirmation text below as noremal just in case you've not ordered tickets before...
 
-We've planned a spectacular event in a magnificent space for us all to celebrate the new year, we'll be announcing the full venue location details nearer the time. You can get the latest event info at www.planetangel.net/nye2009/.
+We've planned a spectacular event in a magnificent space for us all to celebrate the new year, we'll be announcing the full venue location details nearer the time. You can get the latest event info at http://www.planetangel.net/nextparty/.
 
 This e-mail is to confirm that %quantity% ticket/s will be on the Advance Tickets List in the name of %first_name% %last_name%. Thanks for your order.
 

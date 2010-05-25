@@ -1,15 +1,32 @@
 <?php
+/************************************************************************
+ * This file is part of phpIPN.                                         *
+ *                                                                      *
+ * phpIPN is free software: you can redistribute it and/or modify       *
+ * it under the terms of the GNU General Public License as published by *
+ * the Free Software Foundation, either version 3 of the License, or    *
+ * (at your option) any later version.                                  *
+ *                                                                      *
+ * phpIPN is distributed in the hope that it will be useful,            *
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of       *
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the        *
+ * GNU General Public License for more details.                         *
+ *                                                                      *
+ * You should have received a copy of the GNU General Public License    *
+ * along with phpIPN.  If not, see <http://www.gnu.org/licenses/>.      *
+ *                                                                      *
+ * @author Dafydd James <mail@dafyddjames.com>                          *
+ *                                                                      *
+ ************************************************************************/
 require_once 'PHPUnit/Framework.php';
 require_once 'includes_phpunit.php';
  
-class TransactionTest extends PHPUnit_Framework_TestCase
-{
+class TransactionTest extends PHPUnit_Framework_TestCase {
     
     /**
      * @TODO Describe function
      */
-    public function setUp()
-    {
+    public function setUp() {
         $this->validFieldset = $this->readFieldSet("valid1.txt");
 
         $this->_host     = Config::$dbHost;
@@ -28,12 +45,10 @@ class TransactionTest extends PHPUnit_Framework_TestCase
     /**
      * @TODO Describe function
      */
-    public function testNewTransactionFailWithEmptyArray()
-    {
+    public function testNewTransactionFailWithEmptyArray() {
         try {
             $t = new Transaction(array());
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             return;
         }
         $this->fail("Exception was not thrown with empty array!");
@@ -42,13 +57,11 @@ class TransactionTest extends PHPUnit_Framework_TestCase
     /**
      * @TODO Describe function
      */
-    public function testNewTxnValidObject()
-    {
+    public function testNewTxnValidObject() {
         try {
             $t = new Transaction($this->validFieldset);
             $this->assertType("Transaction", $t);
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             $this->failValidFieldSet($e);
         }
     }
