@@ -5,6 +5,7 @@ class Welcome extends Controller {
 	function Welcome()
 	{
 		parent::Controller();	
+        $this->load->helper('url');
 	}
 	
 	function index()

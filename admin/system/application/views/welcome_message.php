@@ -4,7 +4,7 @@
 
 <p>Current features supported:
   <ul>
-    <li><a href="index.php/reports/">generating reports</a></li>
-    <li><a href="index.php/templates/">viewing e-mail templates</a></li>
+    <li><a href="<?=site_url("reports")?>">generating reports</a></li>
+    <li><a href="<?=site_url("templates")?>">viewing e-mail templates</a></li>
   </ul>
 </p>

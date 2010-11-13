@@ -26,16 +26,6 @@ body {
     font-family: arial;
     color: white;
 }
-.file-contents {
-    border: 1px solid;
-    background-color: white;
-    color: black;
-    margin: 5px;
-    padding: 5px;
-    white-space: pre-wrap;
-    font-family: courier, monospace;
-    font-size: 0.8em;
-}
 </style>
 <body>
 <h1>phpIPN Template Administration</h1>

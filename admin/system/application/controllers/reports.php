@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License    *
  * along with phpIPN.  If not, see <http://www.gnu.org/licenses/>.      *
  ************************************************************************/
-//require_once("../../../../../include/includes.php");
+require_once("../include/includes.php");
 
 /**
  * Planet Angel Instant Payment Notification System Administration Panel.
@@ -32,7 +32,7 @@ class Reports extends Controller {
 
     const DB_MANAGER_CLASS_NAME = 'DBManager';
     
-    function Reports() {
+    function __construct() {
         parent::Controller();   
     }
     
@@ -42,6 +42,7 @@ class Reports extends Controller {
     function index() {
         if(true === $this->isExportRequest()) {
             $csvResponse = $this->getCsvResponse();
+            echo $csvResponse;
         } else {
             $data = array('title' => 'Database Reports | phpIPN Admin');
             $this->load->view('header', $data);
@@ -82,7 +83,7 @@ class Reports extends Controller {
             $db = SingletonFactory::getInstance()->getSingleton(DB_MANAGER_CLASS_NAME);
             $dateString = date("Y-m-d-Hi");
             $filename = "pa_ipn_export_{$dateString}_from_$from_date.csv";
-            $csvData = exportMysqlToCsv($table, $sql_query);
+            $csvData = $this->exportMysqlToCsv($table, $sql_query);
             if(true === empty($csvData)) {
                 echo "An error occurred, your data is either empty or there's something wrong with the system. Please try again or e-mail dafydd@cantab.net";
             } else {

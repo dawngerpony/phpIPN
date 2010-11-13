@@ -39,7 +39,35 @@ code {
  padding: 12px 10px 12px 10px;
 }
 
+.file-contents {
+    border: 1px solid;
+    background-color: white;
+    color: black;
+    /*margin: 5px;*/
+    padding: 5px;
+    white-space: pre-wrap;
+    font-family: courier, monospace;
+    font-size: 0.8em;
+}
+
+.control-panel {
+    border: 1px solid;
+    border-color: black;
+    float: right;
+    background-color: #EEEEEE;
+    color: white;
+    padding: 1px;
+    font-size: 0.8em;
+/*    display: none;*/
+}
+
+.control-panel li {
+    display: inline;
+    list-style-type: none;
+    padding-right: 20px;
+}
+
 </style>
 </head>
 <body>
-
+<h1>
