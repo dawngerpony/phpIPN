@@ -1,0 +1,10 @@
+<h1>Welcome to the phpIPN admin panel!</h1>
+
+<p>This is where you can administer the phpIPN system.</p>
+
+<p>Current features supported:
+  <ul>
+    <li><a href="index.php/reports/">generating reports</a></li>
+    <li><a href="index.php/templates/">viewing e-mail templates</a></li>
+  </ul>
+</p>
