@@ -1,6 +1,4 @@
-<h1>Welcome to the phpIPN admin panel!</h1>
-
-<p>This is where you can administer the phpIPN system.</p>
+<p>Welcome to the phpIPN admin panel! This is where you can administer the phpIPN system.</p>
 
 <p>Current features supported:
   <ul>
