@@ -46,7 +46,7 @@ class Templates extends Controller {
     function index() {
         $map = $this->getDirectoryMap($this->templatePath);
         $templateContents = $this->getTemplateContentsMap($map);
-        $data = array('title'           => 'Template Administration | phpIPN Admin', 
+        $data = array('title'           => 'Template Administration', 
                       'directoryMap'    => $map,
                       'templateContents'=> $templateContents);
                       
@@ -66,7 +66,7 @@ class Templates extends Controller {
                                     'cols' => 140,
                                     'rows'  => 60);
         
-        $data = array('title'              => 'Template Edit Screen | phpIPN Admin',
+        $data = array('title'              => 'Edit Template',
                       'filename'           => $filename,
                       'templateContents'   => $templateContents,
                       'textareaParameters' => $textareaParameters);
@@ -97,7 +97,7 @@ class Templates extends Controller {
             }
         }
 
-        $data = array('title' => 'Template Save Screen | phpIPN Admin',
+        $data = array('title' => 'Template Save Screen',
                       'filename' => $filename);
 
         $this->load->view('header', $data);

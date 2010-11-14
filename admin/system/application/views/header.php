@@ -1,6 +1,6 @@
 <html>
 <head>
-<title><?php echo $title; ?></title>
+<title><?=$title . " | phpIPN Admin"?></title>
 
 <style type="text/css">
 
@@ -67,7 +67,11 @@ code {
     padding-right: 20px;
 }
 
+#template-list li {
+    list-style-type: none;
+}
+
 </style>
 </head>
 <body>
-<h1>
+<h1><a href="<?=base_url()?>">phpIPN</a> - <?=$title?></h1>
