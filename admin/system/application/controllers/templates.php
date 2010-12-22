@@ -37,7 +37,7 @@ class Templates extends Controller {
     function __construct() {
         parent::Controller();
         $this->templatePath = self::TEMPLATES_DIRECTORY;
-        $this->load->helper(array('file', 'form', 'url', 'directory'));
+        $this->load->helper(array('file', 'form', 'url', 'directory', 'html'));
     }
     
     /**

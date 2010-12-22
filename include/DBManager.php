@@ -16,7 +16,7 @@
  * along with phpIPN.  If not, see <http://www.gnu.org/licenses/>.      *
  ************************************************************************/
 
-require_once("MDB2.php");
+include_once("MDB2.php");
 
 class DBManager {
     private $_dbh = null; // database handle

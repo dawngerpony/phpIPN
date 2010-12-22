@@ -1,3 +1,4 @@
+<?php echo doctype(); ?>
 <html>
 <head>
 <title><?=$title . " | phpIPN Admin"?></title>
@@ -10,6 +11,7 @@ body {
  font-family: Lucida Grande, Verdana, Sans-serif;
  font-size: 14px;
  color: #4F5155;
+ border-color: #4F5155;
 }
 
 a {
@@ -71,6 +73,9 @@ code {
     list-style-type: none;
 }
 
+thead, tr, td {
+    border: 1px solid;
+}
 </style>
 </head>
 <body>

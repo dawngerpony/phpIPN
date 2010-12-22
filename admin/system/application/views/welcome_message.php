@@ -2,7 +2,7 @@
 
 <p>Current features supported:
   <ul>
-    <li><a href="<?=site_url("reports")?>">generating reports</a></li>
+    <li><a href="<?=site_url("reports")?>">generating reports</a> and running other queries</li>
     <li><a href="<?=site_url("templates")?>">viewing e-mail templates</a></li>
   </ul>
 </p>

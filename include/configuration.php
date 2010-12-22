@@ -28,11 +28,11 @@ class Config {
      * Database details               *
      **********************************/
 
-    static $dbHost              = "";
-    static $dbUser              = "";
-    static $dbPass              = "";
-    static $dbDatabase          = '';
-    static $dbTable             = "";
+    static $dbHost              = "localhost";
+    static $dbUser              = "pangel";
+    static $dbPass              = "pangel";
+    static $dbDatabase          = "pangel_dev";
+    static $dbTable             = "prepay_tickets";
 
     /* Comma-separated list of administrative e-mail addresses. */
     static $admins              = "";

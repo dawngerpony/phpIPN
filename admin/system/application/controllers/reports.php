@@ -33,10 +33,15 @@ require_once("../include/configuration.php");
 class Reports extends Controller {
 
     const DB_MANAGER_CLASS_NAME = 'DBManager';
+    const TABLE_NAME = 'prepay_tickets';
+    
+    private $tableName;
     
     function __construct() {
         parent::Controller();
         $this->load->helper(array('form', 'url'));
+        $this->load->helper('html');
+        $this->tableName = self::TABLE_NAME;
     }
     
     /**
@@ -64,6 +69,38 @@ class Reports extends Controller {
         } else {
             echo "ERROR";
         }
+    }
+    
+    /**
+     * Query the DB for a specific transaction ID.
+     */
+    function query() {
+        $data = array('title' => 'Database Reports');
+        $fields = array('txn_id', 'last_name');
+
+        foreach($fields as $field) {
+            if($this->input->post($field)) {
+                $value = $this->input->post($field);
+                $query = $this->queryDatabase($field, $value);
+                $data['query'] = $query;
+                //break;
+            }            
+        }
+
+        $this->load->view('header', $data);
+        $this->load->view('reportsView', $data);
+        $this->load->view('footer', $data);
+    }
+    
+    function queryDatabase($column, $value) {
+        $this->load->database();
+        //$cols = "id,add_ts,pa_ticket_id,payment_date,mc_gross,payment_status,first_name,last_name,txn_id,address_name,address_street,address_city,address_state,address_country,address_country_code,address_zip,payer_email,payer_status,payer_id,mc_fee,num_cart_items,quantity1,item_name1,item_number1,quantity2,item_name2,item_number2,quantity3,item_name3,item_number3,quantity4,item_name4,item_number4,quantity5,item_name5,item_number5";
+        $cols = "id,add_ts,pa_ticket_id,payment_date,mc_gross,payment_status,first_name,last_name,txn_id";
+        $sql_query = "select $cols from {$this->tableName} where $column = '$value'";
+        $query = $this->db->query($sql_query);
+        $this->load->dbutil();
+        $delimiter = ",";
+        return $query;
     }
 
     /**
