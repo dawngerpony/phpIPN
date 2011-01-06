@@ -33,15 +33,15 @@ require_once("../include/configuration.php");
 class Reports extends Controller {
 
     const DB_MANAGER_CLASS_NAME = 'DBManager';
-    const TABLE_NAME = 'prepay_tickets';
     
     private $tableName;
     
     function __construct() {
         parent::Controller();
+        $this->config->load('phpIPN');
         $this->load->helper(array('form', 'url'));
         $this->load->helper('html');
-        $this->tableName = self::TABLE_NAME;
+        $this->tableName = $this->config->item('ipn_table_name');
     }
     
     /**
@@ -108,7 +108,7 @@ class Reports extends Controller {
      */
     function getCsvResponse($from_date) {
         $this->load->database();
-        $table = 'prepay_tickets';
+        $table = $this->tableName;
         $sql_query = "select * from $table where add_ts >= '$from_date'";
         $query = $this->db->query($sql_query);
         $this->load->dbutil();
