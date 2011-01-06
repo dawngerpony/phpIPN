@@ -50,12 +50,13 @@ $header .= "Content-Length: " . strlen($req) . "\r\n\r\n";
 
 $isSandbox = (isset($_POST['test_ipn']) && ($_POST['test_ipn'] == 1));
 $paypalUrl = $isSandbox ? Config::$paypalUrlBeta : Config::$paypalUrl;
+$txn_id = isset($_POST['txn_id']) ? $_POST['txn_id'] : "UNKNOWN";
 
 Logger::debug("isSandbox = $isSandbox, paypal URL = $paypalUrl");
 $fp = fsockopen($paypalUrl, 80, $errno, $errstr, 30);
 
 if(!$fp) {
-    kaput("HTTP error! Couldn't open socket to $paypalUrl");
+    kaput("HTTP error! Couldn't open socket to $paypalUrl for txn_id [$txn_id]");
     // HTTP ERROR
 }
 fputs ($fp, $header . $req);
@@ -67,10 +68,9 @@ while (false === feof($fp)) {
         Logger::info("Transaction verified! res = $res");
         
         // check that txn_id has not been previously processed
-        if(false === isset($_POST['txn_id']) || empty($_POST['txn_id'])) {
+        if(true === empty($_POST['txn_id'])) {
             kaput("No transaction ID was found in the request. You need one of them.");
         }
-        $txn_id = $_POST['txn_id'];
         if(true === isDuplicateTxnId($txn_id, $db)) {
             kaput("Duplicate transaction id: $txn_id");
         } else {
