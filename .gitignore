@@ -1,0 +1,2 @@
+# ignore CodeIgniter log files
+admin/system/logs/log-*.php
