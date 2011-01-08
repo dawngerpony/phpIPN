@@ -38,20 +38,20 @@ class Transaction {
     /**
      * array of items purchased in the transaction. Each item has "quantity", "name" and "number" indices.
      */
-	protected $_items;
-	
-	protected $_pa_ticket_id;
-	
-	function __construct($inFields)
-	{
+    protected $_items;
+    
+    protected $_pa_ticket_id;
+    
+    function __construct($inFields)
+    {
         $this->_logger = &Log::singleton('file', Config::$logFile);
         $logger = $this->_logger;
 
-	    $this->_requiredFields = array_merge($this->mcFields, 
-	                                         $this->nameFields, 
-	                                         $this->receiverFields,
-	                                         $this->paymentFields);
-	                                         
+        $this->_requiredFields = array_merge($this->mcFields, 
+                                             $this->nameFields, 
+                                             $this->receiverFields,
+                                             $this->paymentFields);
+                                             
         $logger = $this->_logger;
         
         foreach($this->_requiredFields as $requiredField) {
@@ -64,14 +64,14 @@ class Transaction {
 
         // payment_date=15%3A33%3A25+Sep+17%2C+2007+PDT, payment_status=Completed, payment_type=instant
         $this->_fields['payment_date']   = $inFields['payment_date'];
-	    $this->_fields['payment_status'] = $inFields['payment_status'];
-	    $this->_fields['payment_type']   = $inFields['payment_type'];
+        $this->_fields['payment_status'] = $inFields['payment_status'];
+        $this->_fields['payment_type']   = $inFields['payment_type'];
 
         // mc_gross=15.00, mc_shipping=0.00, mc_handling=0.00, mc_shipping1=0.00, 
         // mc_handling1=0.00, mc_gross_1=15.00, mc_currency=GBP, mc_fee=0.71
-	    $this->_fields['mc_gross']    = $inFields['mc_gross'];
-	    $this->_fields['mc_currency'] = $inFields['mc_currency'];
-    	$this->_fields['mc_fee']      = $inFields['mc_fee'];
+        $this->_fields['mc_gross']    = $inFields['mc_gross'];
+        $this->_fields['mc_currency'] = $inFields['mc_currency'];
+        $this->_fields['mc_fee']      = $inFields['mc_fee'];
 
         // name
         // first_name=Test, last_name=User
@@ -99,18 +99,18 @@ class Transaction {
         //receiver_id=XLLRP7LLA86KG
         // payer_id=G5KV3TRTXQN6L
 
-    	$this->_fields['payer_email']    = isset($inFields['payer_email']) ? $inFields['payer_email'] : '?';
-    	$this->_fields['payer_status']   = isset($inFields['payer_status']) ? $inFields['payer_status'] : '';
-    	$this->_fields['payer_id']       = isset($inFields['payer_id']) ? $inFields['payer_id'] : '?' ;
+        $this->_fields['payer_email']    = isset($inFields['payer_email']) ? $inFields['payer_email'] : '?';
+        $this->_fields['payer_status']   = isset($inFields['payer_status']) ? $inFields['payer_status'] : '';
+        $this->_fields['payer_id']       = isset($inFields['payer_id']) ? $inFields['payer_id'] : '?' ;
 
-    	$this->_fields['receiver_email'] = $inFields['receiver_email'];
-    	$this->_fields['receiver_id']    = $inFields['receiver_id'];
+        $this->_fields['receiver_email'] = $inFields['receiver_email'];
+        $this->_fields['receiver_id']    = $inFields['receiver_id'];
 
         if(!isset($inFields['business'])) {
             throw new Exception('Missing business field');
         }
 
-    	$this->_fields['business']       = $inFields['business'];
+        $this->_fields['business']       = $inFields['business'];
 
         //item_name1=Pre+pay+ticket, quantity1=1
         $this->_items = $this->processItems($inFields, $this->itemFields);
@@ -136,20 +136,20 @@ class Transaction {
             if($num_cart_items != $numItems) {
                 throw new Exception("num_cart_items ($num_cart_items) doesn't match actual number of items ($numItems)");
             }
-    	    $this->_fields['num_cart_items'] = $num_cart_items;
+            $this->_fields['num_cart_items'] = $num_cart_items;
         }
 
         $this->_fields = array_map("urldecode",$this->_fields);
 
-    	$this->_pa_ticket_id = $this->newId(Config::$idFmtLetters, Config::$idFmtDigits);
-    	
-    	$customerName = $this->_fields['first_name'] . " " . $this->_fields['last_name'];
-    	$txnId = $this->_fields['txn_id'];
-    	$tktId = $this->_pa_ticket_id;
-    	$numItems = $this->_fields['num_cart_items'];
-    	
+        $this->_pa_ticket_id = $this->newId(Config::$idFmtLetters, Config::$idFmtDigits);
+        
+        $customerName = $this->_fields['first_name'] . " " . $this->_fields['last_name'];
+        $txnId = $this->_fields['txn_id'];
+        $tktId = $this->_pa_ticket_id;
+        $numItems = $this->_fields['num_cart_items'];
+        
         Logger::info("Generated new ticket ID for transaction $txnId: $tktId, $customerName bought $numItems items");
-	}
+    }
 
     /**
      * @TODO Comment this function.
