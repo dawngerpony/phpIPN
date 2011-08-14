@@ -116,7 +116,11 @@ while (false === feof($fp)) {
                     $params = array();
                     // @TODO Update these with dynamic quantities
                     $payer_email = $txn->getField('payer_email');
-                    $to = "$payer_email, tickets@planetangel.net";
+                    $to = "$payer_email";
+                    $additionalRecipient = Config::$additionalRecipient;
+                    if(false === empty($additionalRecipient)) {
+                        $to .= ", $additionalRecipient";
+                    }
 
                     $params['pa_ticket_id'] = $txn->getPaTicketId();
                     $params['first_name']   = $txn->getField('first_name');

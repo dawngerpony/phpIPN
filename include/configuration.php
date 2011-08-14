@@ -37,6 +37,9 @@ class Config {
     /* Comma-separated list of administrative e-mail addresses. */
     static $admins              = "";
 
+    /* Additional recipient for confirmation e-mails. */
+    static $additionalRecipient = "";
+
     /* Address to appear in the "From" portion of the e-mails, e.g. "Guardian Angel <admin@guardianangel.com>" */
     static $mailFromAddress     = "";
     /* Absolute path to log file, e.g. "/home/www/www.guardianangel.com/prepay/prepay.log" */
