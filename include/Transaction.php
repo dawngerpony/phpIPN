@@ -146,7 +146,11 @@ class Transaction {
         $customerName = $this->_fields['first_name'] . " " . $this->_fields['last_name'];
         $txnId = $this->_fields['txn_id'];
         $tktId = $this->_pa_ticket_id;
-        $numItems = $this->_fields['num_cart_items'];
+        if($inFields['payment_status'] == "Completed") {
+            $numItems = $this->_fields['num_cart_items'];
+        } else {
+            $numItems = 0;
+        }
         
         Logger::info("Generated new ticket ID for transaction $txnId: $tktId, $customerName bought $numItems items");
     }
@@ -159,9 +163,9 @@ class Transaction {
         $items = array();
         for($i = 1; $i <= self::MAX_ITEMS; $i++)
         {
-            $name = urldecode($input['item_name' . $i]);
-            $number = urldecode($input['item_number' . $i]);
-            $quantity = urldecode($input['quantity' . $i]);
+            // $name = urldecode($input['item_name' . $i]);
+            // $number = urldecode($input['item_number' . $i]);
+            // $quantity = urldecode($input['quantity' . $i]);
             
             //$items[] = new Item($name, $number, $quantity)
             

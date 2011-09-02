@@ -15,8 +15,8 @@
  * You should have received a copy of the GNU General Public License    *
  * along with phpIPN.  If not, see <http://www.gnu.org/licenses/>.      *
  ************************************************************************/
-require_once 'PHPUnit/Framework.php';
-require_once 'includes_phpunit.php';
+
+require_once '../include/DBManager.php';
  
 class DBManagerTest extends PHPUnit_Framework_TestCase
 {

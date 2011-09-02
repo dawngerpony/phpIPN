@@ -18,6 +18,7 @@
  * @author Dafydd James <mail@dafyddjames.com>                          *
  *                                                                      *
  ************************************************************************/
+include_once 'Log.php';
 
 /**
  * Logger - manages the logging

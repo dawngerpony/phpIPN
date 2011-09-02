@@ -73,7 +73,7 @@ class MailManager {
     /**
      * Sends a confirmation mail to the user.
      */
-    public function sendConfirmationMailToUser($to, $params, $type)
+    public function sendConfirmationMailToUser($to, $params, $ticketType)
     {
         $this->checkConfirmationMailParams($params);
         $item_name = $params['item_name'];
@@ -82,7 +82,8 @@ class MailManager {
         //Logger::debug("parts: " . print_r($parts,true));
         $partyName = ltrim($parts[1]);
         $subject = "Ticket Confirmation: {$partyName}";
-        $template = "confirmation_" . $type;
+        $template = "confirmation_" . $ticketType;
+        Logger::debug("Sending to $to with subject [$subject] using template $template");
         $this->sendMailFromTemplate($to, $subject, $params, $template);
     }
     
@@ -92,7 +93,7 @@ class MailManager {
     protected function sendMailFromTemplate($recipients, $subject, $params, $templateFilename, $plaintext = true)
     {
         $fullTemplateFilename = dirname(__FILE__) . "/../templates/$templateFilename.txt";
-        Logger::debug("Template: $fullTemplateFilename");
+        Logger::debug("Full template filename: $fullTemplateFilename");
         $template = file_get_contents($fullTemplateFilename);
 
         // @TODO Replace this with proper template stuff
@@ -140,9 +141,13 @@ class MailManager {
     }
     
     /**
-     * @TODO comment this function
+     * Helper method to replace the body of a mail template with the appropriate 
+     * values from the PayPal transaction. This method is only public so that
+     * it can be unit tested.
+     *
+     * @see MailManagerTest
      */
-    protected function replaceTokens($mailBody, $params)
+    public function replaceTokens($mailBody, $params)
     {
         $delimiter = "%";
         

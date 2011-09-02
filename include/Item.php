@@ -29,45 +29,26 @@ class Item {
     /**
      * @TODO complete this comment.
      */
-    function __construct($index, $name, $number, $quantity)
-    {
-        
-        switch(strtoupper($number))
-        {
-            case 'PREPAY-PARTY':
-                break;
-            case 'PREPAY-CHILLED':
-                break;
-            case 'PREPAY-SPECIAL':
-                break;
-            default:
-                break;
-            
-        }
+    function __construct($type, $name, $itemNumber, $quantity) {
         $this->type = $type;
         $this->name = $name;
-        $this->number = $number;
+        $this->number = $itemNumber;
         $this->quantity = $quantity;
     }
     
-    public function getType()
-    {
+    public function getType() {
         return $this->type;
     }
     
-    public function getName()
-    {
+    public function getName() {
         return $this->name;
     }
 
-    public function getNumber()
-    {
+    public function getNumber() {
         return $this->number;
     }
 
-    public function getQuantity()
-    {
+    public function getQuantity() {
         return $this->quantity;
     }
-
 }

@@ -18,8 +18,7 @@
  * @author Dafydd James <mail@dafyddjames.com>                          *
  *                                                                      *
  ************************************************************************/
-require_once 'PHPUnit/Framework.php';
-require_once 'includes_phpunit.php';
+require_once '../include/Transaction.php';
  
 class TransactionTest extends PHPUnit_Framework_TestCase {
     
@@ -168,10 +167,9 @@ class TransactionTest extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @TODO Describe function
+     * Helper method to fail a test with a descriptive message.
      */
-    protected function failValidFieldSet($e)
-    {
+    protected function failValidFieldSet($e) {
         $this->fail("Exception was thrown with valid field set on line " . $e->getLine() . " in file " . $e->getFile() . ": " . $e->getMessage() . "\n");
     }
     
@@ -192,15 +190,17 @@ class TransactionTest extends PHPUnit_Framework_TestCase {
     /**
      * @TODO Describe function
      */
-    protected function readFieldSet($filename)
-    {
+    protected function readFieldSet($filename) {
         $fullFilename = "fixtures/$filename";
         $fileArray = file($fullFilename, FILE_IGNORE_NEW_LINES);
 
         $fieldSet = array();
         foreach($fileArray as $line) {
             $lineArray = explode("=",$line);
-            $fieldSet[trim($lineArray[0])] = trim($lineArray[1]);
+            if(false === empty($lineArray) && count($lineArray) == 2) {
+                //echo "lineArray = " . print_r($lineArray, true);
+                $fieldSet[trim($lineArray[0])] = trim($lineArray[1]);
+            }
         }
         return $fieldSet;
     }
