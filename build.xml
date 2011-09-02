@@ -12,7 +12,7 @@
     <!-- ============================================  -->
     <!-- Target: build                                 -->
     <!-- ============================================  -->
-    <target name="build" depends="prepare">
+    <target name="build" depends="prepare,test">        
         <echo msg="Copying files to build directory..." />
 
         <!-- <echo msg="Copying ./about.php to ./build directory..." />
