@@ -18,8 +18,8 @@
  * @author Dafydd James <mail@dafyddjames.com>                          *
  *                                                                      *
  ************************************************************************/
-require_once '../include/MailManager.php';
-require_once '../include/SingletonFactory.php';
+require_once 'include/MailManager.php';
+require_once 'include/SingletonFactory.php';
 
 
 class MailManagerTest extends PHPUnit_Framework_TestCase {
@@ -49,7 +49,7 @@ class MailManagerTest extends PHPUnit_Framework_TestCase {
      */
     public function testMailManagerSingleton() {
         $m = SingletonFactory::getInstance()->getSingleton($this->className);
-        $this->assertType($this->className, $m);
+        $this->assertInstanceOf($this->className, $m);
     }
     
     /**

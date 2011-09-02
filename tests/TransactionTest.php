@@ -18,7 +18,7 @@
  * @author Dafydd James <mail@dafyddjames.com>                          *
  *                                                                      *
  ************************************************************************/
-require_once '../include/Transaction.php';
+require_once 'include/Transaction.php';
  
 class TransactionTest extends PHPUnit_Framework_TestCase {
     

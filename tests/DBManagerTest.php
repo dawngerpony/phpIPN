@@ -16,7 +16,7 @@
  * along with phpIPN.  If not, see <http://www.gnu.org/licenses/>.      *
  ************************************************************************/
 
-require_once '../include/DBManager.php';
+require_once 'include/DBManager.php';
  
 class DBManagerTest extends PHPUnit_Framework_TestCase
 {
@@ -81,7 +81,7 @@ class DBManagerTest extends PHPUnit_Framework_TestCase
     public function testNewDatabase()
     {
         $db = SingletonFactory::getInstance()->getSingleton($this->className);
-        $this->assertType($this->className, $db);
+        $this->assertInstanceOf($this->className, $db);
     }
     
     /**
@@ -105,7 +105,7 @@ class DBManagerTest extends PHPUnit_Framework_TestCase
     public function testAddDuplicatePayment()
     {
         $db = SingletonFactory::getInstance()->getSingleton($this->className);
-        $this->assertType($this->className, $db);
+        $this->assertInstanceOf($this->className, $db);
         
         $this->validFieldset['txn_id'] = rand();
         

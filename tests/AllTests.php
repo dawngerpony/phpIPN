@@ -5,8 +5,6 @@ if (!defined('PHPUnit_MAIN_METHOD')) {
  
 require_once 'PHPUnit/TextUI/TestRunner.php';
  
-//require_once 'Framework/AllTests.php';
-
 require_once 'DBManagerTest.php';
 require_once 'ItemTest.php';
 require_once 'LoggerTest.php';
@@ -22,7 +20,7 @@ class AllTests {
         $suite = new PHPUnit_Framework_TestSuite('PHPUnit');
  
         //$suite->addTest(Framework_AllTests::suite());
-        $suite->addTestSuite('LoggerTest');
+        $suite->addTestSuite('DBManagerTest');
         $suite->addTestSuite('ItemTest');
         $suite->addTestSuite('LoggerTest');
         $suite->addTestSuite('MailManagerTest');

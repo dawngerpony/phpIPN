@@ -18,7 +18,7 @@
  * @author Dafydd James <mail@dafyddjames.com>                          *
  *                                                                      *
  ************************************************************************/
-require_once '../include/Item.php';
+require_once 'include/Item.php';
 
 class ItemTest extends PHPUnit_Framework_TestCase {
 

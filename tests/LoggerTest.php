@@ -18,8 +18,8 @@
  * @author Dafydd James <mail@dafyddjames.com>                          *
  *                                                                      *
  ************************************************************************/
-require_once '../include/Logger.php';
-require_once("configuration_phpunit.php");
+require_once 'include/Logger.php';
+require_once 'configuration_phpunit.php';
 
 class LoggerTest extends PHPUnit_Framework_TestCase
 {
