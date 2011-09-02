@@ -41,6 +41,7 @@
     </target>
 
     <target name="test">
+        <mkdir dir="./reports" />
         <echo msg="Running tests..." />
         <phpunit>
           <formatter todir="reports" type="xml"/>
