@@ -1,56 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="phpIPN" default="dist">
 
+    <property file="build.properties" />
+
+    <property name="builddir" value="${build.directory}" override="true" />
+    <property name="outputfile" value="${phing.project.name}-${project.version}" override="true" />
+
+    <!-- Fileset for all files -->
+    <fileset dir="." id="allfiles">
+        <include name="INSTALL" />
+        <include name="README" />
+        <include name="admin/**" />
+        <include name="include/**" />
+        <include name="index.html" />
+        <include name="licence.txt" />
+        <include name="notify.php" />
+        <include name="templates/**" />
+    </fileset>
+     
     <!-- ============================================  -->
-    <!-- Target: prepare                               -->
+    <!-- Target: Rebuild                               -->
     <!-- ============================================  -->
-    <target name="prepare">
-        <echo msg="Making directory ./build" />
-        <mkdir dir="./build" />
+    <target name="clean" description="clean this project">
+        <delete dir="${builddir}" />
+        <!-- <phingcall target="main" /> -->
     </target>
 
     <!-- ============================================  -->
     <!-- Target: build                                 -->
     <!-- ============================================  -->
-    <target name="build" depends="prepare,test">        
+    <target name="build" depends="test">        
         <echo msg="Copying files to build directory..." />
-
-        <!-- <echo msg="Copying ./about.php to ./build directory..." />
-        <copy file="./about.php" tofile="./build/about.php" />
-
-        <echo msg="Copying ./browsers.php to ./build directory..." />
-        <copy file="./browsers.php" tofile="./build/browsers.php" />
-
-        <echo msg="Copying ./contact.php to ./build directory..." />
-        <copy file="./contact.php" tofile="./build/contact.php" /> -->
+        <copy todir="${builddir}">
+            <fileset refid="allfiles" />
+        </copy>
     </target>
 
     <!-- ============================================  -->
     <!-- (DEFAULT)  Target: dist                       --> 
     <!-- ============================================  -->
-    <target name="dist" depends="build">
+    <target name="dist" depends="clean,build" description="Do everything and create a deployable artefact">
         <echo msg="Creating archive..." />
-
-        <tar destfile="./build/build.tar.gz" compression="gzip">
-            <fileset dir="./build">
+        <tar destfile="${builddir}/${outputfile}.tar.gz" compression="gzip">
+            <fileset dir="${builddir}">
                 <include name="*" />
             </fileset>
         </tar>
-
         <echo msg="Files copied and compressed in build directory OK!" />
     </target>
 
-    <target name="test">
-        <mkdir dir="./reports" />
-        <echo msg="Running tests..." />
+    <target name="test" description="run the tests">
+        <mkdir dir="./reports"/>
+        <echo msg="Running tests..."/>
         <phpunit>
-          <formatter todir="reports" type="xml"/>
-          <batchtest>
-            <fileset dir="tests">
-              <include name="**/*Test*.php"/>
-              <exclude name="**/Abstract*.php"/>
-            </fileset>
-          </batchtest>
+            <!-- <formatter todir="reports" type="xml"/> -->
+            <formatter type="plain" usefile="false"/>
+            <batchtest>
+                <fileset dir="tests">
+                    <include name="AllTests.php"/>
+                </fileset>
+            </batchtest>
         </phpunit>
     </target>
     
