@@ -21,23 +21,21 @@ class NotifyController {
     
     protected $isSandbox = true;
     protected $ticketTypes;
-    protected $ipnPort;
     
     /**
      * Retrieve relevant values from configuration.
      */
     function __construct() {
         $this->ticketTypes = Config::$ticketTypes;
-        $this->ipnPort = Config::$ipnPort;
         $this->additionalRecipient = Config::$additionalRecipient;
         $this->dbEnabled = Config::DB_ENABLED;
         $this->mailEnabled = Config::MAIL_ENABLED;
     }
     
-    function getPayPalUrl() {
-        return $this->isSandbox ? Config::$paypalUrlBeta : Config::$paypalUrl;
-    }
-    
+    /**
+     * Returns the correct receiver e-mail address
+     * depending on whether we're using the sandbox or not.
+     */
     function getReceiverEmail() {
         return $this->isSandbox ? Config::$receiverEmailTest : Config::$receiverEmail;
     }
@@ -45,78 +43,21 @@ class NotifyController {
     /**
      * Verify a new POST transaction with PayPal, then process it.
      */
-    function run() {
+    function run($data) {
         Logger::notice("Processing new payment notification...");
-        Logger::debug("POST data: " . json_encode($_POST));
-        $this->isSandbox = (true == isset($_POST['test_ipn']) && ($_POST['test_ipn'] == 1));
-        if(true === $this->verifyTransaction($_POST)) {
-            Logger::info("Transaction verified!");
-            $this->processTransaction($_POST);            
+        if(true === empty($data)) {
+            Logger::warn("No POST data received, exiting early.");
         } else {
-            Logger::error("Could not verify transaction with PayPal!");
-        }
-        Logger::notice("Transaction processing complete!");
-    }
-
-    /**
-     * Verify an incoming request with PayPal to check that it's real.
-     */
-    function verifyTransaction($data) {
-        Logger::notice("Verifying transaction with PayPal...");
-        $isVerified = false;
-
-        $paypalUrl = $this->getPaypalUrl($data);
-        Logger::debug("isSandbox = $this->isSandbox, paypal URL = $paypalUrl");
-
-        // read the post from PayPal system and add 'cmd'
-        $req = 'cmd=_notify-validate';
-
-        // build the request
-        foreach ($data as $key => $value) {
-            $value = urlencode(stripslashes($value));
-            $req .= "&$key=$value";
-        }
-
-        // post back to PayPal system to validate
-        $header = "";
-        $header .= "POST /cgi-bin/webscr HTTP/1.0\r\n";
-        $header .= "Content-Type: application/x-www-form-urlencoded\r\n";
-        $header .= "Content-Length: " . strlen($req) . "\r\n\r\n";
-
-        $fp = fsockopen($paypalUrl, $this->ipnPort, $errno, $errstr, 30);
-
-        if(!$fp) {
-            Logger::error("HTTP error! Couldn't open socket to $paypalUrl for txn_id [$txn_id]");
-            return false;
-        }
-        fputs ($fp, $header . $req);
-        while (false === feof($fp)) {
-            $res = fgets($fp, 1024);
-            if(0 == strcmp($res, "VERIFIED")) {
-                Logger::info("Transaction verified! res = $res");
-                $isVerified = true;
-            } elseif(0 == strcmp ($res, "INVALID")) {
-                Logger::error("Invalid transaction received (response from Paypal: $res)!");
-                // TODO: log for manual investigation
-                // TODO: send e-mail to P&A
+            Logger::debug("POST data: " . json_encode($data));
+            $this->isSandbox = (true == isset($data['test_ipn']) && ($data['test_ipn'] == 1));
+            $paypal = new PayPalProxy($this->isSandbox);
+            if(true === $paypal->verifyTransaction($data)) {
+                Logger::info("Transaction verified!");
+                $this->processTransaction($data);            
+            } else {
+                Logger::error("Could not verify transaction with PayPal!");
             }
-        }
-        fclose ($fp);
-        return $isVerified;
-    }
-    
-    /**
-     * Checks the database for an existing transaction ID.
-     * @return true if it's duplicate, false if not.
-     */
-    function isDuplicateTxnId($txn_id) {
-        $db = SingletonFactory::getInstance()->getSingleton(DB_MANAGER_CLASS_NAME);
-        $dupFound = $db->checkDuplicateRow('txn_id', $txn_id);
-        if($dupFound == Constants::DUPLICATE_FOUND) {
-            Logger::error("Duplicate transaction id: $txn_id!");
-            return true;
-        } else {
-            return false;
+            Logger::notice("Transaction processing complete!");
         }
     }
 

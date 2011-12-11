@@ -27,4 +27,4 @@ require_once("SingletonFactory.php");
 require_once("Transaction.php");
 require_once("Logger.php");
 require_once("NotifyController.php");
-
+require_once("PayPalProxy.php");

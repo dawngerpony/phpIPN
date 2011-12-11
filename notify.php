@@ -22,4 +22,18 @@ require_once("include/includes.php");
 define('DB_MANAGER_CLASS_NAME', 'DBManager');
 
 $controller = new NotifyController();
-$controller->run();
+$controller->run($_POST);
+?>
+<html>
+<head>
+<title>phpIPN notification endpoint</title>
+</head>
+<body>
+<h1>phpIPN Notification Endpoint</h1>
+<p>This is the phpIPN notification endpoint, which should be called by PayPal rather than loaded directly in a browser.</p>
+<p>See <a href="https://github.com/duffj/phpIPN">GitHub</a> for more details about phpIPN.</p>
+<h2>POST variables:</h2>
+<pre>
+<?php print_r($_POST); ?>
+</body>
+</html>
