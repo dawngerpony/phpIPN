@@ -117,7 +117,9 @@ class MailManager {
     protected function sendPlainTextMail($from, $recipients, $subject, $mailBody)
     {
         $headers = "From: " . $from;
+        Logger::debug("Starting mail send...");
         $mailStatus = mail($recipients, $subject, $mailBody, $headers);
+        Logger::debug("Mail send complete!");
     }
     
     /**
