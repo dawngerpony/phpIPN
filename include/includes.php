@@ -26,4 +26,5 @@ require_once("Log.php");
 require_once("SingletonFactory.php");
 require_once("Transaction.php");
 require_once("Logger.php");
+require_once("NotifyController.php");
 
