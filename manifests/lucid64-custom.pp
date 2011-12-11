@@ -1,5 +1,4 @@
-# Basic Puppet Apache manifest
-
+# Basic Puppet Apache/PHP5 manifest
 class lucid64 {
 
   # needed when VM doesn't have the puppet group already created (e.g. lucid64) - dafydd
@@ -15,33 +14,41 @@ class lucid64 {
   
   Package { ensure => "installed" }
 
-  # package { "libapache2-mod-php5" : }
-  # package { "apache2" : }
   package { "php5" : }
-  # package { "libapache2-mod-php5" : }
+  package { "php-pear" : }
+  package { "multitail" : }
+  package { "mysql-server" : }
+  package { "php5-mysql" : }
+  package { "postfix" : }
+  package { "nail" : }
   
   exec { "symlink_vagrant":
-    command => "ln -s /vagrant/ /var/www/",
+    command => "ln -s /vagrant /var/www/vagrant",
   }
-
-  # $php5_packages = [ "php5", "apache2" ]
-  # # $php5_packages = [ "libapache2-mod-php5" ]
-  # 
-  # package { $php5_packages: }
 
   service { "apache2":
     ensure => running,
     require => Package["php5"],
   }
 
-  # Service["apache2"] -> Package["apache2"]
-  # Service["apache2"] -> Package["php5"]
-  
+  service { "mysql":
+    ensure => running,
+    require => Package["mysql-server"],
+  }
+
+  exec { "install_pear_packages":
+    command => "sudo pear install MDB2 Log Mail MDB2_Driver_mysql"
+  }
+
+  exec { "setup_db":
+    command => "sudo mysql -u root < /vagrant/manifests/db_setup.sql && sudo mysql -u root pangel_dev < /vagrant/scripts/create_database.sql";
+  }
+    
   # Restart apache because if you don't do this, apache2 will start without PHP loaded
   exec { "restart_apache":
     command => "service apache2 restart",
   }
-    
+  
 }
 
 include lucid64
