@@ -17,7 +17,7 @@
  ************************************************************************/
 
 class Config {    
-    const IS_BETA           = false;
+    const IS_BETA           = true;
     const MAIL_ENABLED      = true;
     const DB_ENABLED        = true;
     
@@ -32,10 +32,10 @@ class Config {
     static $dbUser              = "pangel";
     static $dbPass              = "pangel";
     static $dbDatabase          = "pangel_dev";
-    static $dbTable             = "prepay_tickets";
+    static $dbTable             = "ipndata";
 
     /* Comma-separated list of administrative e-mail addresses. */
-    static $admins              = "";
+    static $admins              = "vagrant@localhost";
 
     /* Additional recipient for confirmation e-mails. */
     static $additionalRecipient = "";
@@ -43,7 +43,7 @@ class Config {
     /* Address to appear in the "From" portion of the e-mails, e.g. "Guardian Angel <admin@guardianangel.com>" */
     static $mailFromAddress     = "";
     /* Absolute path to log file, e.g. "/home/www/www.guardianangel.com/prepay/prepay.log" */
-    static $logFile             = "";
+    static $logFile             = "/tmp/phpipn.log";
 
     /* Paypal receiver e-mail - this is the same as the one that goes into the HTML form, e.g. 'admin@guardianangel.com'. */
     static $receiverEmail       = "";
@@ -57,8 +57,9 @@ class Config {
     static $currency            = "GBP";
 
     /* Paypal URLs - you shouldn't need to change these! */
-    static $paypalUrlBeta       = "www.sandbox.paypal.com";
-    static $paypalUrl           = "www.paypal.com";
+    static $paypalUrlBeta       = "ssl://www.sandbox.paypal.com";
+    static $paypalUrl           = "ssl://www.paypal.com";
+    static $ipnPort             = "443";
 
     static $idFmtLetters        = "ABCDEF";
     static $idFmtDigits         = "4";
