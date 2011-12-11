@@ -15,7 +15,6 @@
  * You should have received a copy of the GNU General Public License    *
  * along with phpIPN.  If not, see <http://www.gnu.org/licenses/>.      *
  ************************************************************************/
-require_once("include/includes.php");
 
 /**
  * Proxy for PayPal communication - factored out for maintainability

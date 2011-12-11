@@ -22,6 +22,7 @@ class lucid64 {
   package { "postfix" : }
   package { "nail" : }
   package { "vim" : }
+  package { "phpunit" : }
   
   exec { "symlink_vagrant":
     command => "ln -s /vagrant /var/www/vagrant",
@@ -40,7 +41,7 @@ class lucid64 {
   # Install PEAR packages, but wait until php5-mysql is installed
   # otherwise the MDB2_Driver_mysql installation will fail.
   exec { "install_pear_packages":
-    command => "sudo pear install MDB2 Log Mail MDB2_Driver_mysql",
+    command => "sudo pear channel-discover pear.phing.info && sudo pear install phpunit MDB2 Log Mail MDB2_Driver_mysql phing/phing",
     require => Package['php5-mysql']
   }
 

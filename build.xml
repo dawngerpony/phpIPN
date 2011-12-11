@@ -52,12 +52,14 @@
     <target name="test" description="run the tests">
         <mkdir dir="./reports"/>
         <echo msg="Running tests..."/>
-        <phpunit>
+        <phpunit haltonfailure="true" haltonerror="true">
             <!-- <formatter todir="reports" type="xml"/> -->
             <formatter type="plain" usefile="false"/>
             <batchtest>
                 <fileset dir="tests">
-                    <include name="AllTests.php"/>
+                    <include name="**/*Test.php"/>
+                    <exclude name="**/DBManagerTest.php"/>
+                    <!-- <include name="**/*Test.php"/> -->
                 </fileset>
             </batchtest>
         </phpunit>

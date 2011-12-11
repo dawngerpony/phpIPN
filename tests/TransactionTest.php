@@ -22,11 +22,15 @@ require_once 'include/Transaction.php';
  
 class TransactionTest extends PHPUnit_Framework_TestCase {
     
+    function __construct() {
+        $this->fixtures = __DIR__ . DIRECTORY_SEPARATOR . "fixtures" . DIRECTORY_SEPARATOR;
+    }
+    
     /**
      * @TODO Describe function
      */
     public function setUp() {
-        $this->validFieldset = $this->readFieldSet("valid1.txt");
+        $this->validFieldset = $this->readFieldSet($this->fixtures . "valid1.txt");
 
         $this->_host     = Config::$dbHost;
         $this->_user     = Config::$dbUser;
@@ -59,7 +63,7 @@ class TransactionTest extends PHPUnit_Framework_TestCase {
     public function testNewTxnValidObject() {
         try {
             $t = new Transaction($this->validFieldset);
-            $this->assertType("Transaction", $t);
+            $this->assertInstanceOf("Transaction", $t);
         } catch (Exception $e) {
             $this->failValidFieldSet($e);
         }
@@ -138,7 +142,7 @@ class TransactionTest extends PHPUnit_Framework_TestCase {
     {
         try {
             $field = 'parent_txn_id';
-            $refundFieldset = $this->readFieldSet("valid3-refund.txt");
+            $refundFieldset = $this->readFieldSet($this->fixtures . "valid3-refund.txt");
             list($expected, $actual) = $this->getTestResultsForField($refundFieldset, $field);
             $expected = urldecode($expected);
         }
@@ -153,7 +157,7 @@ class TransactionTest extends PHPUnit_Framework_TestCase {
      */
     public function testMultipleItems()
     {
-        $fieldset = $this->readFieldSet("valid2-multipleitems.txt");
+        $fieldset = $this->readFieldSet($this->fixtures . "valid2-multipleitems.txt");
         $num_cart_items = $fieldset['num_cart_items'];
         try {
             $t = new Transaction($fieldset);
@@ -191,7 +195,7 @@ class TransactionTest extends PHPUnit_Framework_TestCase {
      * @TODO Describe function
      */
     protected function readFieldSet($filename) {
-        $fullFilename = "fixtures/$filename";
+        $fullFilename = "$filename";
         $fileArray = file($fullFilename, FILE_IGNORE_NEW_LINES);
 
         $fieldSet = array();

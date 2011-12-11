@@ -19,6 +19,8 @@
  *                                                                      *
  ************************************************************************/
 include "Mail.php";
+require_once(__DIR__ . DIRECTORY_SEPARATOR . 'configuration.php');
+
 
 /**
  * @TODO Add comment.

@@ -18,12 +18,10 @@
 
 require_once 'include/DBManager.php';
  
-class DBManagerTest extends PHPUnit_Framework_TestCase
-{
+class DBManagerTest extends PHPUnit_Framework_TestCase {
     private $className = 'DBManager';
     
-    public function setUp()
-    {
+    public function setUp() {
         $this->validFieldset = array(
             'payment_date'         => urldecode('09%3A12%3A10+Sep+28%2C+2007+PDT'),
             'payment_status'       => 'Completed',
@@ -78,8 +76,7 @@ class DBManagerTest extends PHPUnit_Framework_TestCase
     /**
      * Test that DB instance retrieved from Singleton is of the correct class.
      */
-    public function testNewDatabase()
-    {
+    public function testNewDatabase() {
         $db = SingletonFactory::getInstance()->getSingleton($this->className);
         $this->assertInstanceOf($this->className, $db);
     }
@@ -87,8 +84,7 @@ class DBManagerTest extends PHPUnit_Framework_TestCase
     /**
      * Test addding of new payment with valid fields.
      */
-    public function testAddPaymentWithValidFields()
-    {
+    public function testAddPaymentWithValidFields() {
         $db = SingletonFactory::getInstance()->getSingleton($this->className);
         
         $this->validFieldset['txn_id'] = rand();
@@ -102,8 +98,7 @@ class DBManagerTest extends PHPUnit_Framework_TestCase
     /**
      * Test the insertion of a duplicate payment.
      */
-    public function testAddDuplicatePayment()
-    {
+    public function testAddDuplicatePayment() {
         $db = SingletonFactory::getInstance()->getSingleton($this->className);
         $this->assertInstanceOf($this->className, $db);
         
