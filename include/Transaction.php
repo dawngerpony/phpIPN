@@ -52,8 +52,6 @@ class Transaction {
                                              $this->receiverFields,
                                              $this->paymentFields);
                                              
-        $logger = $this->_logger;
-        
         foreach($this->_requiredFields as $requiredField) {
             if(!isset($inFields[$requiredField]) || empty($inFields[$requiredField])) {
                 $msg = "Missing field: $requiredField";
@@ -92,7 +90,9 @@ class Transaction {
         $this->_fields['parent_txn_id'] = isset($inFields['parent_txn_id']) ? $inFields['parent_txn_id'] : 'N/A';
         
         foreach($this->addressFields as $field) {
-            $this->_fields[$field] = $inFields[$field];
+            if(false === empty($inFields[$field])) {
+                $this->_fields[$field] = $inFields[$field];
+            }
         }
 
         //payer_status=unverified
