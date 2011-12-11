@@ -34,33 +34,34 @@ class DBManager {
             Logger::debug("Initializing database: mysql://{$this->_user}@{$this->_host}/$this->_database");
             $db =& MDB2::singleton($dsn);
             if (PEAR::isError($db)) {
-                die($db->getMessage() . ', ' . $db->getDebugInfo());
+                $message = $db->getMessage() . ', ' . $db->getDebugInfo();
+                Logger::error($message);
+                die($message);
             }
             $this->_dbh = $db;
         }
     }
 
-	/*
-	 * addTransaction() - add transaction to database, given a list of fields.
-	 *                    Only add fields from the list of valid fields.
-	 */
-    public function addTransaction($txn)
-    {
-        $txnData = $txn->getData();
-        
+    /*
+     * addTransaction() - add transaction to database, given a list of fields.
+     *                    Only add fields from the list of valid fields.
+     */
+    public function addTransaction($txn) {
+        $status = Constants::STATUS_OK;        
         $dupFound = $this->checkDuplicateRow('txn_id',$txn->getTransactionId());
-        if($dupFound == Constants::DUPLICATE_FOUND) {
-            Logger::err("Duplicate transaction ID: " . $txn->getTransactionId());
-            return Constants::STATUS_ERROR;
+        if(Constants::DUPLICATE_FOUND === $dupFound) {
+            $txnId = $txn->getTransactionId();
+            Logger::error("Duplicate transaction ID [$txnId], not adding to database");
+            $status = Constants::STATUS_ERROR;
+        } else {
+            $txnData = $txn->getData();
+            $placeholders = $this->getPlaceholders($txnData);
+            $columns = implode(",",array_keys($txnData));
+            $values = array_values($txnData);
+            $query = "INSERT INTO $this->_table ($columns) VALUES ($placeholders)";
+            $result = $this->executeQuery($query, $values);
         }
-        
-        $placeholders = $this->getPlaceholders($txnData);
-        $columns = implode(",",array_keys($txnData));
-        $values = array_values($txnData);
-        
-        $query = "INSERT INTO $this->_table ($columns) VALUES ($placeholders)";
-        
-        $result = $this->executeQuery($query, $values);
+        return $status;
     }
     
     /**
