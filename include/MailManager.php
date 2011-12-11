@@ -35,7 +35,7 @@ class MailManager {
     const TOKENS_PAYMENT_STATUS = "payment_status";
 
     /**
-     * @TODO comment this function
+     * Retrieve configuration information.
      */
     function __construct($params)
     {
@@ -67,7 +67,7 @@ class MailManager {
     {
         $subject = "Prepay System Error";
         $mailBody = "The prepay system generated the following error: $msg";
-        $this->sendPlainTextMail($this->adminUsers, $subject, $mailBody);
+        $this->sendPlainTextMail($this->from, $this->adminUsers, $subject, $mailBody);
     }
     
     /**
@@ -112,12 +112,12 @@ class MailManager {
     }
     
     /**
-     * @TODO Comment this function.
+     * Send a plain text e-mail using the mail() function.
      */
     protected function sendPlainTextMail($from, $recipients, $subject, $mailBody)
     {
         $headers = "From: " . $from;
-        Logger::debug("Starting mail send...");
+        Logger::debug("Starting mail send ('$subject')...");
         $mailStatus = mail($recipients, $subject, $mailBody, $headers);
         Logger::debug("Mail send complete!");
     }
