@@ -1,38 +1,38 @@
 # Basic Puppet Apache/PHP5 manifest
-class lucid64 {
-
-  # needed when VM doesn't have the puppet group already created (e.g. lucid64) - dafydd
-  group { "puppet":
-      ensure => "present",
-  }
-
-  Exec { path => [ "/bin/", "/sbin/" , "/usr/bin/", "/usr/sbin/" ] }
-  
+class setup {
   exec { "apt-get_update":
     command => "apt-get update",
   }
   
+  # needed when VM doesn't have the puppet group already created (e.g. lucid64) - dafydd
+  group { "puppet":
+      ensure => "present",
+  }
+  
+}
+class lucid64 {
+
+  Exec { path => [ "/bin/", "/sbin/" , "/usr/bin/", "/usr/sbin/" ] }
+  
   Package { ensure => "installed" }
 
-  # package { "php5" : }
+  package { "php5" : }
+  package { "apache2" : }
   package { "php-pear" : }
-  package { "multitail" : }
   package { "mysql-server" : }
   package { "php5-mysql" : }
-  package { "postfix" : }
-  package { "nail" : }
-  package { "vim" : }
   package { "phpunit" : }
   
   exec { "symlink_vagrant":
     command => "ln -s /vagrant /var/www/vagrant",
+    require => Package["apache2"]
   }
-
+  
   service { "apache2":
     ensure => running,
-    require => Package["php5-mysql"],
+    require => Package["php5-mysql", "apache2"],
   }
-
+  
   service { "mysql":
     ensure => running,
     require => Package["mysql-server"],
@@ -42,7 +42,7 @@ class lucid64 {
   # otherwise the MDB2_Driver_mysql installation will fail.
   exec { "install_pear_packages":
     command => "sudo pear channel-discover pear.phing.info && sudo pear install phpunit MDB2 Log Mail MDB2_Driver_mysql phing/phing",
-    require => Package['php5-mysql']
+    require => Package["php5", "php5-mysql"]
   }
 
   # Set up the database with a basic phpIPN schema; use the 'require' attribute
@@ -56,12 +56,13 @@ class lucid64 {
   # Restart apache because if you don't do this, apache2 will start without PHP loaded
   exec { "restart_apache":
     command => "service apache2 restart",
-    require => Package["php5-mysql"]
+    require => Package["apache2", "php5", "php5-mysql"]
   }
   
-  file { "/home/vagrant/.multitailrc" :
-    source => "/vagrant/manifests/.multitailrc"
-  }
+  class { setup: stage => pre }
+
 }
+
+stage { pre: before => Stage[main] }
 
 include lucid64
