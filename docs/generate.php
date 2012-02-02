@@ -11,9 +11,9 @@ $my_html = Markdown($my_text);
 <html>
   <head>
     <title><?php echo $filename; ?></title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
   </head>
   <body>
-    <h1><?php echo $filename; ?></h1>
     <?php echo $my_html; ?>
   </body>
 </html>
