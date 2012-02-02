@@ -2,3 +2,5 @@
 admin/system/logs/log-*.php
 build
 .vagrant
+favicon.ico
+
