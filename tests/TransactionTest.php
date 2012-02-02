@@ -19,6 +19,7 @@
  *                                                                      *
  ************************************************************************/
 require_once 'include/Transaction.php';
+require_once 'MDB2.php';
  
 class TransactionTest extends PHPUnit_Framework_TestCase {
     

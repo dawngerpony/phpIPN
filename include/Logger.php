@@ -18,7 +18,7 @@
  * @author Dafydd James <mail@dafyddjames.com>                          *
  *                                                                      *
  ************************************************************************/
-require_once(__DIR__ . DIRECTORY_SEPARATOR . 'configuration.php');
+// require_once(__DIR__ . DIRECTORY_SEPARATOR . 'configuration.php');
 include_once 'Log.php';
 
 /**
