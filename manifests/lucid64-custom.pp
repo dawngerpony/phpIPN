@@ -8,7 +8,21 @@ class setup {
   group { "puppet":
       ensure => "present",
   }
+
+  Package { ensure => "installed" }
+
+  package { "php5": }
+  package { "php-pear": }
   
+  exec { "upgrade_pear":
+    command => "pear upgrade-all",
+    require => Package["php5", "php-pear"]
+  }
+  
+  exec { "pear_auto_discover":
+    command => "pear config-set auto_discover 1",
+    require => Exec["upgrade_pear"]
+  }
 }
 
 class lucid64 {
@@ -17,16 +31,14 @@ class lucid64 {
   
   Package { ensure => "installed" }
 
-  package { "php5": }
   package { "apache2": }
-  package { "php-pear": }
   package { "mysql-server": }
   package { "php5-mysql": }
-  package { "phpunit": }
-  
+
   exec { "symlink_vagrant":
     command => "ln -s /vagrant /var/www/vagrant",
-    require => Package["apache2"]
+    require => Package["apache2"],
+    unless => "[ -L /var/www/vagrant ]"
   }
   
   service { "apache2":
@@ -39,26 +51,22 @@ class lucid64 {
     require => Package["mysql-server"],
   }
 
-  $pear_channels = ["pear.michelf.com", "pear.phing.info"]
-
-  define discover_pear_channel($hostname) {
-    exec { "channel_$hostname":
-      command => "pear channel-discover $hostname",
-      require => Package["php5", "php-pear"],
-      unless => "pear channel-info $hostname"
+  define install_custom_pear_package($package) {
+    exec { "pear_install_$package":
+      command => "pear install -a $package",
+      unless => "pear info $package",
     }
   }
   
-  # discover_pear_channel($pear_channels)
-  discover_pear_channel { "pear.michelf.com": hostname => "pear.michelf.com" }
-  discover_pear_channel { "pear.phing.info": hostname => "pear.phing.info" }
-  
+  install_custom_pear_package { "MarkdownExtra": package => "pear.michelf.com/MarkdownExtra" }
+  install_custom_pear_package { "phing": package => "pear.phing.info/phing" }
+  install_custom_pear_package { "phpunit": package => "pear.phpunit.de/PHPUnit" }
+
   # Install PEAR packages, but wait until php5-mysql is installed
   # otherwise the MDB2_Driver_mysql installation will fail.
   exec { "install_pear_packages":
-    command => "pear install phpunit MDB2 Log Mail MDB2_Driver_mysql phing/phing michelf/MarkdownExtra",
-    require => Package["php5", "php-pear", "php5-mysql"],
-    require => Discover_pear_channel["pear.michelf.com", "pear.phing.info"]
+    command => "pear install Log Mail MDB2 MDB2_Driver_mysql",
+    require => Package["php5-mysql"],
   }
 
   define import_mysql_file($user, $file, $schema) {
